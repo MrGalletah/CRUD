@@ -155,3 +155,37 @@ function showData(){
     } )
 }
 showData();
+
+
+document.getElementById("btnGet1").addEventListener("click", function() {
+    var inputId = document.getElementById("inputGet1Id").value;
+    var url = "https://65427c7aad8044116ed372d0.mockapi.io/users";
+    if (inputId) {
+      url += "/" + inputId;
+    }
+  console.log(url);
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        if (inputId) {
+          console.log(data);  
+          const userList = document.getElementById('results');
+          userList.innerHTML = '';
+          const listItem = document.createElement('li');
+          listItem.textContent = `ID: ${data.id}, Name: ${data.name}, Lastname: ${data.lastname}`;
+          userList.appendChild(listItem);
+        } else {
+            console.log(data.users);
+        const userList = document.getElementById('results');
+        userList.innerHTML = '';
+        data.forEach(user => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `ID: ${user.id}, Name: ${user.name}, Lastname: ${user.lastname}`;
+            userList.appendChild(listItem);
+      })
+      }
+    })
+    .catch(error => {
+      console.error("Algo salió mal...", error);
+    });
+});
