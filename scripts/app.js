@@ -21,17 +21,21 @@ function errorAlert() {
 
 // DELETE  *********************************
 
-inputDelete.addEventListener("input", () => {
+inputDelete.addEventListener("input", toggleDeleteButtonState);
+
+function toggleDeleteButtonState() {
   if (inputDelete.value !== "") {
     btnDelete.removeAttribute("disabled");
   } else {
     btnDelete.disabled = true;
   }
-});
+}
+
 
 btnDelete.addEventListener("click", () => {
   deleteFetch();
   inputDelete.value = '';
+  toggleDeleteButtonState()
 });
 
 const deleteFetch = async () => {
@@ -175,6 +179,7 @@ return response.json()
  
  inputPostNombre.value = '';
  inputPostApellido.value = '';
+ togglePostButtonState();
 });
 
 
