@@ -74,18 +74,18 @@ modifyId.addEventListener('input', (e) => {
       .then(response => response.json())
       .then(data => {
         const user = data.find(item => item.id === userId);
+        const myModal = new bootstrap.Modal(document.getElementById('dataModal'))
         if (user) {
           inputPutNombre.value = user.name;
-          inputPutApellido.value = user.lastname;  
-          dataModal.style.display = 'block';
-        } else{
+          inputPutApellido.value = user.lastname;
+          myModal.show();
+        } else {
+          myModal.hide();
           console.error('User not found.');
-          dataModal.style.display = 'none';
           document.getElementById("alert-error").classList.add("show");
-          setTimeout(() => {          
-            location.reload();
-          }, 2000);
-
+          setTimeout(()=>{
+            document.getElementById("alert-error").classList.remove("show");
+          },2000)
         }
       })
       .catch(error => {
