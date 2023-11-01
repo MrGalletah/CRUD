@@ -47,18 +47,33 @@ btnPost.addEventListener("click", function () {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Usuario agregado", data);
+        console.log('usuario agregado',data);
         document.getElementById("inputPostNombre").value = "";
         document.getElementById("inputPostApellido").value = "";
       })
       .catch((error) => {
-        console.error("Error al agregar usuario:", error);
+        console.error("ERROR", error);
       });
   } else {
     alert("Completa los campos");
   }
 });
 
-
-
+const deleteBtn = document.getElementById('btnDelete');
+deleteBtn.addEventListener('click', function () {
+  const deleteInput = document.getElementById('inputDelete').value;
+  fetch(`https://6542837dad8044116ed3816f.mockapi.io/users${deleteInput}`, {
+    method: 'DELETE',
+  })
+    .then(response => {
+      if (response.status === 200) {
+        console.log('Usuario eliminado con éxito');
+      } else {
+        console.error('Error al eliminar usuario. Estado de respuesta:', response.status);
+      }
+    })
+    .catch(error => {
+      console.error('Error al eliminar usuario:', error);
+    });
+});
 
