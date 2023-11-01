@@ -67,7 +67,12 @@ modifyId.addEventListener('input', (e) => {
           dataModal.style.display = 'block';
         } else {
           console.error('User not found.');
+          dataModal.style.display = 'none';
           document.getElementById("alert-error").classList.add("show");
+          setTimeout(() => {
+            location.reload();
+          }, 2000);
+
         }
       })
       .catch(error => {
