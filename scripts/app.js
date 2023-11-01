@@ -24,25 +24,31 @@ btnDelete.addEventListener("click", (e) => {
   inputDelete.value = '';
   });
 
-const deleteFetch = async () => {
-  try {
-    const request = await fetch(
-      `https://65427c7aad8044116ed372d0.mockapi.io/users/${inputDelete.value}`,
-      {
-        method: "DELETE",
+  const deleteFetch = async () => {
+    try {
+      const request = await fetch(
+        `https://65427c7aad8044116ed372d0.mockapi.io/users/${inputDelete.value}`,
+        {
+          method: "DELETE",
+        }
+      );
+      response = await request.json();
+      results.innerHTML = "";
+      html = `
+        <div> <hr> > ID: ${response.id} <br>
+              > Name: ${response.name} <br>
+              > Lastname: ${response.lastname}<hr><br>
+        </div>`;
+      results.innerHTML += html;
+      if(response === "Not found"){
+          results.innerHTML = "";
+          document.getElementById("alert-error").classList.add("show");
       }
-    );
-   showData();
-    if(response === "Not found"){
-        resultsContainer.innerHTML = "";
-        document.getElementById("alert-error").classList.add("show");
+      console.log(response)
+    } catch (error) {
+        console.log("asdasdasd")
     }
-    console.log(response)
-  } catch (error) {
-      console.log("asdasdasd")
-  }
-};
-
+  };
 modifyId.addEventListener('input', (e) => {
     if (modifyId.value !== '') {
       btnPut.removeAttribute('disabled');
