@@ -41,11 +41,12 @@
                     <div class="col-md-6">
                         <div class="border p-3 my-3 position-relative" id="put-box">
                             <h6>Modificar registro</h6>
-                            <input type="number" id="inputPutId" class="form-control"
-                                placeholder="ID del registro a modificar">
-                            <button id="btnPut" class="btn btn-warning position-absolute bottom-0 mb-3" disabled>
-                                Modificar</button>
+                            <input type="number" id="inputPutId" class="form-control" placeholder="ID del registro a modificar">
+                            <button id="btnPut" class="btn btn-warning position-absolute bottom-0 mb-3" data-bs-toggle="modal" data-bs-target="#dataModal">
+                                Modificar
+                            </button>
                         </div>
+                        
                     </div>
                     <div class="col-md-6">
                         <div class="border p-3 my-3 position-relative" id="delete-box">
@@ -81,7 +82,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" id="btnSendChanges" disabled>Guardar</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="btnSendChanges">Guardar</button>
                 </div>
             </div>
         </div>
