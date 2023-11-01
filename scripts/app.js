@@ -59,7 +59,9 @@ btnSendChanges.addEventListener('click', () => {
       .catch(error => {
           console.error('Error updating data:', error);
       });
-});const results = document.getElementById('results');
+});
+
+const resultsContainer = document.getElementById('results');
 const btnPost = document.getElementById('btnPost');
 const inputPostNombre = document.getElementById('inputPostNombre');
 const inputPostApellido = document.getElementById('inputPostApellido');
@@ -72,6 +74,7 @@ const response = await fetch('https://65427c7aad8044116ed372d0.mockapi.io/users'
     },
     body: JSON.stringify(data)
 });
+console.log(response.json());
 return response.json()
 }
 
@@ -79,16 +82,34 @@ btnPost.addEventListener('click', ()=> {
     const object = {
         name: inputPostNombre.value,
         lastname: inputPostApellido.value
-}
+};
  postMethod(object);
- //AddNewPerson(object);
+ AddNewPerson(newObject);
 })
-/*
-function AddNewPerson(data){
-const add = data;
-const newPerson = document.createElement('li');
-newPerson.innerHTML = add;
-results.appendChild(newPerson);
-} 
-*/
 
+function AddNewPerson(data){
+const add = 
+`<li>id: ${data.id} name: ${data.name} lastname: ${data.lastname}</li>`
+;
+const newPerson = document.createElement('span');
+newPerson.innerHTML += add;
+resultsContainer.appendChild(newPerson);
+} 
+
+
+
+function showData(){
+    fetch('https://65427c7aad8044116ed372d0.mockapi.io/users')
+    .then(response => response.json())
+    .then(results => {
+        results.forEach(result => {
+            const newLi = document.createElement('span');
+            const person = `
+            <li>id: ${result.id} name: ${result.name} last name: ${result.lastname}</li>
+            `;
+            newLi.innerHTML += person
+             resultsContainer.append(newLi); 
+        });
+    } )
+}
+showData();
