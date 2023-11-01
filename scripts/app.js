@@ -28,8 +28,12 @@ const deleteFetch = async () => {
     const listItem = document.createElement("li");
     listItem.textContent = `ID: ${response.id}, Name: ${response.name}, Lastname: ${response.lastname}`;
     results.appendChild(listItem);
+    if(response === "Not found"){
+        results.innerHTML = "";
+        document.getElementById("alert-error").classList.add("show");
+    }
     console.log(response)
   } catch (error) {
-    console.log(error);
+      console.log("asdasdasd")
   }
 };
