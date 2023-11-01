@@ -84,8 +84,8 @@ btnPost.addEventListener('click', ()=> {
         lastname: inputPostApellido.value
 };
  postMethod(object);
- AddNewPerson(newObject);
-})
+ AddNewPerson(Object);
+});
 
 function AddNewPerson(data){
 const add = 
