@@ -64,7 +64,7 @@ btnPost.addEventListener("click", function () {
 const deleteBtn = document.getElementById("btnDelete");
 deleteBtn.addEventListener("click", function () {
   const deleteInput = document.getElementById("inputDelete").value;
-  fetch(`https://6542837dad8044116ed3816f.mockapi.io/users${deleteInput}`, {
+  fetch(`https://6542837dad8044116ed3816f.mockapi.io/users/${deleteInput}`, {
     method: "DELETE",
   })
     .then((response) => {
