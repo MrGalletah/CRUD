@@ -62,14 +62,13 @@ modifyId.addEventListener('input', (e) => {
         const user = data.find(item => item.id === userId);
         if (user) {
           inputPutNombre.value = user.name;
-          inputPutApellido.value = user.lastname;
-  
+          inputPutApellido.value = user.lastname;  
           dataModal.style.display = 'block';
-        } else {
+        } else{
           console.error('User not found.');
           dataModal.style.display = 'none';
           document.getElementById("alert-error").classList.add("show");
-          setTimeout(() => {
+          setTimeout(() => {          
             location.reload();
           }, 2000);
 
