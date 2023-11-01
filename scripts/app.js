@@ -166,21 +166,21 @@ resultsContainer.appendChild(newPerson);
 
 
 
-function showData(){
-    fetch('https://65427c7aad8044116ed372d0.mockapi.io/users')
-    .then(response => response.json())
-    .then(results => {
-        results.forEach(result => {
-            const newLi = document.createElement('span');
-            const person = `
-            <li>id: ${result.id} name: ${result.name} last name: ${result.lastname}</li>
-            `;
-            newLi.innerHTML += person
-             resultsContainer.append(newLi); 
-        });
-    } )
-}
-showData();
+// function showData(){
+//     fetch('https://65427c7aad8044116ed372d0.mockapi.io/users')
+//     .then(response => response.json())
+//     .then(results => {
+//         results.forEach(result => {
+//             const newLi = document.createElement('span');
+//             const person = `
+//             <li>id: ${result.id} name: ${result.name} last name: ${result.lastname}</li>
+//             `;
+//             newLi.innerHTML += person
+//              resultsContainer.append(newLi); 
+//         });
+//     } )
+// }
+
 
 
 document.getElementById("btnGet1").addEventListener("click", function() {
