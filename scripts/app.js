@@ -62,12 +62,14 @@ btnPut.addEventListener('click', () => {
         dataModal.style.display = 'block';
       } else {
         console.error('User not found.');
+        document.getElementById("alert-error").classList.add("show");
       }
     })
     .catch(error => {
       console.error('Error fetching user data:', error);
     });
 });
+
 
 btnSendChanges.addEventListener('click', () => {
   const userId = inputPutId.value;
