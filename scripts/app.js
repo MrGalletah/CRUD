@@ -4,6 +4,7 @@ const btnDelete = document.getElementById("btnDelete");
 const results = document.getElementById("results");
 const userList = document.getElementById('results');
 const btnPut = document.getElementById('btnPut')
+const modifyId = document.getElementById('inputPutId')
 
 
 
@@ -37,25 +38,35 @@ const deleteFetch = async () => {
     console.log(error);
   }
 };
+
+
+modifyId.addEventListener("input", (e) => {
+  if (modifyId.value !== "") {
+    btnPut.removeAttribute("disabled");
+  } else {
+    btnPut.disabled = true;
+  }
+});
+
 btnPut.addEventListener('click', () => {
-  const userId = inputPutId.value;
-  
+  const userId = modifyId.value;
+
   fetch(`https://65427c7aad8044116ed372d0.mockapi.io/users`)
-      .then(response => response.json())
-      .then(data => {
-          const user = data.find(item => item.id === userId);
-          if (user) {
-              inputPutNombre.value = user.name;
-              inputPutApellido.value = user.lastname;
-              
-              dataModal.style.display = 'block';
-          } else {
-              console.error('User not found.');
-          }
-      })
-      .catch(error => {
-          console.error('Error fetching user data:', error);
-      });
+    .then(response => response.json())
+    .then(data => {
+      const user = data.find(item => item.id === userId);
+      if (user) {
+        inputPutNombre.value = user.name;
+        inputPutApellido.value = user.lastname;
+
+        dataModal.style.display = 'block';
+      } else {
+        console.error('User not found.');
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching user data:', error);
+    });
 });
 
 btnSendChanges.addEventListener('click', () => {
@@ -97,4 +108,37 @@ btnSendChanges.addEventListener('click', () => {
       .catch(error => {
           console.error('Error updating data:', error);
       });
+});
+
+document.getElementById("btnGet1").addEventListener("click", function() {
+  var inputId = document.getElementById("inputGet1Id").value;
+  var url = "https://65427c7aad8044116ed372d0.mockapi.io/users";
+  if (inputId) {
+    url += "/" + inputId;
+  }
+console.log(url);
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      if (inputId) {
+        console.log(data);  
+        const userList = document.getElementById('results');
+        userList.innerHTML = '';
+        const listItem = document.createElement('li');
+        listItem.textContent = `ID: ${data.id}, Name: ${data.name}, Lastname: ${data.lastname}`;
+        userList.appendChild(listItem);
+      } else {
+console.log(data.users);
+        const userList = document.getElementById('results');
+        userList.innerHTML = '';
+        data.forEach(user => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `ID: ${user.id}, Name: ${user.name}, Lastname: ${user.lastname}`;
+            userList.appendChild(listItem);
+      })
+      }
+    })
+    .catch(error => {
+      console.error("Algo salió mal...", error);
+    });
 });
