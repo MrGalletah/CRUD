@@ -1,9 +1,11 @@
 const URL = "https://65427c7aad8044116ed372d0.mockapi.io/users";
 const inputDelete = document.getElementById("inputDelete");
 const btnDelete = document.getElementById("btnDelete");
-const results = document.getElementById("results");
-const userList = document.getElementById('results');
 const btnPut = document.getElementById('btnPut')
+const resultsContainer = document.getElementById('results');
+const btnPost = document.getElementById('btnPost');
+const inputPostNombre = document.getElementById('inputPostNombre');
+const inputPostApellido = document.getElementById('inputPostApellido');
 
 
 
@@ -28,12 +30,12 @@ const deleteFetch = async () => {
       }
     );
     response = await request.json();
-    results.innerHTML = "";
+    resultsContainer.innerHTML = "";
     const listItem = document.createElement("li");
     listItem.textContent = `ID: ${response.id}, Name: ${response.name}, Lastname: ${response.lastname}`;
-    results.appendChild(listItem);
+    resultsContainer.appendChild(listItem);
     if(response === "Not found"){
-        results.innerHTML = "";
+        resultsContainer.innerHTML = "";
         document.getElementById("alert-error").classList.add("show");
     }
     console.log(response)
@@ -84,11 +86,11 @@ btnSendChanges.addEventListener('click', () => {
               fetch(`https://65427c7aad8044116ed372d0.mockapi.io/users`)
                   .then(response => response.json())
                   .then(data => {
-                      userList.innerHTML = '';
+                      resultsContainer.innerHTML = '';
                       data.forEach(user => {
                           const listItem = document.createElement('li');
                           listItem.textContent = `ID: ${user.id}, Name: ${user.name}, Lastname: ${user.lastname}`;
-                          userList.appendChild(listItem);
+                          resultsContainer.appendChild(listItem);
                       });
                   })
                   .catch(error => {
@@ -103,10 +105,7 @@ btnSendChanges.addEventListener('click', () => {
       });
 });
 
-const resultsContainer = document.getElementById('results');
-const btnPost = document.getElementById('btnPost');
-const inputPostNombre = document.getElementById('inputPostNombre');
-const inputPostApellido = document.getElementById('inputPostApellido');
+
 
 async function postMethod(data = {}){
 const response = await fetch('https://65427c7aad8044116ed372d0.mockapi.io/users', {
@@ -169,19 +168,17 @@ document.getElementById("btnGet1").addEventListener("click", function() {
       .then(data => {
         if (inputId) {
           console.log(data);  
-          const userList = document.getElementById('results');
-          userList.innerHTML = '';
+          resultsContainer.innerHTML = '';
           const listItem = document.createElement('li');
           listItem.textContent = `ID: ${data.id}, Name: ${data.name}, Lastname: ${data.lastname}`;
-          userList.appendChild(listItem);
+          resultsContainer.appendChild(listItem);
         } else {
             console.log(data.users);
-        const userList = document.getElementById('results');
-        userList.innerHTML = '';
+        resultsContainer.innerHTML = '';
         data.forEach(user => {
             const listItem = document.createElement('li');
             listItem.textContent = `ID: ${user.id}, Name: ${user.name}, Lastname: ${user.lastname}`;
-            userList.appendChild(listItem);
+            resultsContainer.appendChild(listItem);
       })
       }
     })
