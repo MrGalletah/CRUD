@@ -6,8 +6,9 @@ const resultsContainer = document.getElementById('results');
 const btnPost = document.getElementById('btnPost');
 const inputPostNombre = document.getElementById('inputPostNombre');
 const inputPostApellido = document.getElementById('inputPostApellido');
-const modifyId = document.getElementById('inputPutId')
-
+const modifyId = document.getElementById('inputPutId');
+const btnSendChanges = document.getElementById('btnSendChanges');
+const inputGet1Id = document.getElementById('inputGet1Id');
 
 
 inputDelete.addEventListener("input", (e) => {
@@ -17,10 +18,11 @@ inputDelete.addEventListener("input", (e) => {
     btnDelete.disabled = true;
   }
 });
-
+// DELETE  *********************************
 btnDelete.addEventListener("click", (e) => {
   deleteFetch();
-});
+  inputDelete.value = '';
+  });
 
 const deleteFetch = async () => {
   try {
@@ -30,11 +32,7 @@ const deleteFetch = async () => {
         method: "DELETE",
       }
     );
-    response = await request.json();
-    resultsContainer.innerHTML = "";
-    const listItem = document.createElement("li");
-    listItem.textContent = `ID: ${response.id}, Name: ${response.name}, Lastname: ${response.lastname}`;
-    resultsContainer.appendChild(listItem);
+   showData();
     if(response === "Not found"){
         resultsContainer.innerHTML = "";
         document.getElementById("alert-error").classList.add("show");
@@ -85,7 +83,7 @@ btnSendChanges.addEventListener('click', () => {
       name: inputPutNombre.value,
       lastname: inputPutApellido.value
   };
-
+  // Put (modificar)  ************************
   fetch(`https://65427c7aad8044116ed372d0.mockapi.io/users/${userId}`, {
       method: 'PUT',
       headers: {
@@ -101,12 +99,17 @@ btnSendChanges.addEventListener('click', () => {
               fetch(`https://65427c7aad8044116ed372d0.mockapi.io/users`)
                   .then(response => response.json())
                   .then(data => {
-                      resultsContainer.innerHTML = '';
-                      data.forEach(user => {
-                          const listItem = document.createElement('li');
-                          listItem.textContent = `ID: ${user.id}, Name: ${user.name}, Lastname: ${user.lastname}`;
-                          resultsContainer.appendChild(listItem);
+                    userList.innerHTML = '';
+                      data.forEach(data => {
+                        let html = '';
+                        html += `
+                        <div> <hr> > ID: ${data.id} <br>
+                              > Name: ${data.name} <br>
+                              > Lastname: ${data.lastname}<hr><br>
+                        </div>`;
+                        userList.innerHTML = html;
                       });
+                      
                   })
                   .catch(error => {
                       console.error('Error fetching user data:', error);
@@ -114,12 +117,14 @@ btnSendChanges.addEventListener('click', () => {
           } else {
               console.error('Error updating data');
           }
+          showData();
       })
       .catch(error => {
           console.error('Error updating data:', error);
       });
-});
-
+      
+      inputPutId.value = '';
+    });
 inputPostNombre.addEventListener("input", togglePostButtonState);
 inputPostApellido.addEventListener("input", togglePostButtonState);
 
@@ -133,7 +138,8 @@ function togglePostButtonState() {
 
 togglePostButtonState();
 
-
+// POST (agregar) ********************************
+btnPost.addEventListener('click', ()=> {
 async function postMethod(data = {}){
 const response = await fetch('https://65427c7aad8044116ed372d0.mockapi.io/users', {
     method: 'POST',
@@ -142,57 +148,70 @@ const response = await fetch('https://65427c7aad8044116ed372d0.mockapi.io/users'
     },
     body: JSON.stringify(data)
 });
+showData();
 console.log(response.json());
 return response.json()
 }
-
-btnPost.addEventListener('click', ()=> {
     const object = {
         name: inputPostNombre.value,
         lastname: inputPostApellido.value
 };
  postMethod(object);
- AddNewPerson(Object);
+ 
+ inputPostNombre.value = '';
+ inputPostApellido.value = '';
 });
 
-function AddNewPerson(data){
-const add = 
-`<li>id: ${data.id} name: ${data.name} lastname: ${data.lastname}</li>`
-;
-const newPerson = document.createElement('span');
-newPerson.innerHTML += add;
-resultsContainer.appendChild(newPerson);
-} 
 
 
-
+// GET ********************
 document.getElementById("btnGet1").addEventListener("click", function() {
-    var inputId = document.getElementById("inputGet1Id").value;
-    var url = "https://65427c7aad8044116ed372d0.mockapi.io/users";
-    if (inputId) {
-      url += "/" + inputId;
-    }
+  var inputId = document.getElementById("inputGet1Id").value;
+  var url = "https://65427c7aad8044116ed372d0.mockapi.io/users";
+  if (inputId) {
+    url += "/" + inputId;
+  }
   console.log(url);
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        if (inputId) {
-          console.log(data);  
-          resultsContainer.innerHTML = '';
-          const listItem = document.createElement('li');
-          listItem.textContent = `ID: ${data.id}, Name: ${data.name}, Lastname: ${data.lastname}`;
-          resultsContainer.appendChild(listItem);
-        } else {
-            console.log(data.users);
-        resultsContainer.innerHTML = '';
-        data.forEach(user => {
-            const listItem = document.createElement('li');
-            listItem.textContent = `ID: ${user.id}, Name: ${user.name}, Lastname: ${user.lastname}`;
-            resultsContainer.appendChild(listItem);
-      })
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      const userList = document.getElementById('results');
+      userList.innerHTML = '';
+      if (inputId) {
+        console.log(data);  
+        let html = '';
+        html += `
+        <div> <hr> > ID: ${data.id} <br>
+              > Name: ${data.name} <br>
+              > Lastname: ${data.lastname}<hr><br>
+        </div>`;
+        userList.innerHTML = html;
+      } else {
+        console.log(data.users);
+        showData();
       }
     })
     .catch(error => {
       console.error("Algo salió mal...", error);
     });
+    inputGet1Id.value = '';
 });
+
+// Función que se llamará al final de realizar cáda método para actualizar los datos
+function showData(){
+  fetch('https://65427c7aad8044116ed372d0.mockapi.io/users')
+  .then(data => data.json())
+  .then(data => {
+    const userList = document.getElementById('results');
+    userList.innerHTML = '';
+        data.forEach(data => {
+          let html = '';
+          html += `
+          <div> > ID: ${data.id} <br>
+                > Name: ${data.name} <br>
+                > Lastname: ${data.lastname}<hr>
+          </div>`;
+          userList.innerHTML += html;
+      });
+  } )
+}
