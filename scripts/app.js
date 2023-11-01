@@ -6,6 +6,7 @@ const resultsContainer = document.getElementById('results');
 const btnPost = document.getElementById('btnPost');
 const inputPostNombre = document.getElementById('inputPostNombre');
 const inputPostApellido = document.getElementById('inputPostApellido');
+const modifyId = document.getElementById('inputPutId')
 
 
 
@@ -43,26 +44,36 @@ const deleteFetch = async () => {
       console.log("asdasdasd")
   }
 };
-btnPut.addEventListener('click', () => {
-  const userId = inputPutId.value;
+
+modifyId.addEventListener('input', (e) => {
+    if (modifyId.value !== '') {
+      btnPut.removeAttribute('disabled');
+    } else {
+      btnPut.disabled = true;
+    }
+  });
   
-  fetch(`https://65427c7aad8044116ed372d0.mockapi.io/users`)
+  btnPut.addEventListener('click', () => {
+    const userId = modifyId.value;
+  
+    fetch(`https://65427c7aad8044116ed372d0.mockapi.io/users`)
       .then(response => response.json())
       .then(data => {
-          const user = data.find(item => item.id === userId);
-          if (user) {
-              inputPutNombre.value = user.name;
-              inputPutApellido.value = user.lastname;
-              
-              dataModal.style.display = 'block';
-          } else {
-              console.error('User not found.');
-          }
+        const user = data.find(item => item.id === userId);
+        if (user) {
+          inputPutNombre.value = user.name;
+          inputPutApellido.value = user.lastname;
+  
+          dataModal.style.display = 'block';
+        } else {
+          console.error('User not found.');
+          document.getElementById("alert-error").classList.add("show");
+        }
       })
       .catch(error => {
-          console.error('Error fetching user data:', error);
+        console.error('Error fetching user data:', error);
       });
-});
+  });
 
 btnSendChanges.addEventListener('click', () => {
   const userId = inputPutId.value;
@@ -105,6 +116,18 @@ btnSendChanges.addEventListener('click', () => {
       });
 });
 
+inputPostNombre.addEventListener("input", togglePostButtonState);
+inputPostApellido.addEventListener("input", togglePostButtonState);
+
+function togglePostButtonState() {
+  if (inputPostNombre.value !== "" && inputPostApellido.value !== "") {
+    btnPost.removeAttribute("disabled");
+  } else {
+    btnPost.disabled = true;
+  }
+}
+
+togglePostButtonState();
 
 
 async function postMethod(data = {}){
