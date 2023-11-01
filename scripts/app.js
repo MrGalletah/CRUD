@@ -1,7 +1,7 @@
 const URL = "https://65427c7aad8044116ed372d0.mockapi.io/users";
 const inputDelete = document.getElementById("inputDelete");
 const btnDelete = document.getElementById("btnDelete");
-const results = document.getElementById("results")
+const results = document.getElementById("results");
 
 inputDelete.addEventListener("input", (e) => {
   if (inputDelete.value !== "") {
@@ -12,7 +12,7 @@ inputDelete.addEventListener("input", (e) => {
 });
 
 btnDelete.addEventListener("click", (e) => {
-    deleteFetch()
+  deleteFetch();
 });
 
 const deleteFetch = async () => {
@@ -24,8 +24,11 @@ const deleteFetch = async () => {
       }
     );
     response = await request.json();
-    results.innerHTML = response
-    console.log(response);
+    results.innerHTML = "";
+    const listItem = document.createElement("li");
+    listItem.textContent = `ID: ${response.id}, Name: ${response.name}, Lastname: ${response.lastname}`;
+    results.appendChild(listItem);
+    console.log(response)
   } catch (error) {
     console.log(error);
   }
