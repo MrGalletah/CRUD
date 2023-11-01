@@ -9,46 +9,52 @@ const inputPostApellido = document.getElementById('inputPostApellido');
 const modifyId = document.getElementById('inputPutId');
 const btnSendChanges = document.getElementById('btnSendChanges');
 const inputGet1Id = document.getElementById('inputGet1Id');
+const alert = document.getElementById('alert-error');
 
 
-inputDelete.addEventListener("input", (e) => {
+function errorAlert() {
+  alert.classList.add('show');
+  setTimeout(() => {
+      alert.classList.remove('show');
+  }, 2000);
+}
+
+// DELETE  *********************************
+
+inputDelete.addEventListener("input", () => {
   if (inputDelete.value !== "") {
     btnDelete.removeAttribute("disabled");
   } else {
     btnDelete.disabled = true;
   }
 });
-// DELETE  *********************************
-btnDelete.addEventListener("click", (e) => {
+
+btnDelete.addEventListener("click", () => {
   deleteFetch();
   inputDelete.value = '';
-  });
+});
 
-  const deleteFetch = async () => {
-    try {
-      const request = await fetch(
-        `https://65427c7aad8044116ed372d0.mockapi.io/users/${inputDelete.value}`,
-        {
-          method: "DELETE",
-        }
-      );
-      response = await request.json();
-      results.innerHTML = "";
-      html = `
-        <div> <hr> > ID: ${response.id} <br>
-              > Name: ${response.name} <br>
-              > Lastname: ${response.lastname}<hr><br>
-        </div>`;
-      results.innerHTML += html;
-      if(response === "Not found"){
-          results.innerHTML = "";
-          document.getElementById("alert-error").classList.add("show");
+const deleteFetch = async () => {
+  try {
+    const response = await fetch(
+      `https://65427c7aad8044116ed372d0.mockapi.io/users/${inputDelete.value}`,
+      {
+        method: "DELETE",
       }
-      console.log(response)
-    } catch (error) {
-        console.log("asdasdasd")
+    );
+    if (response.ok) {
+      showData();
+    } else if (response.status === 404) {
+      errorAlert();
+      showData();
     }
-  };
+    console.log(response);
+  } catch (error) {
+    console.log("Error");
+  }
+};
+
+// Put (modificar)  ************************
 modifyId.addEventListener('input', (e) => {
     if (modifyId.value !== '') {
       btnPut.removeAttribute('disabled');
@@ -89,7 +95,7 @@ btnSendChanges.addEventListener('click', () => {
       name: inputPutNombre.value,
       lastname: inputPutApellido.value
   };
-  // Put (modificar)  ************************
+  
   fetch(`https://65427c7aad8044116ed372d0.mockapi.io/users/${userId}`, {
       method: 'PUT',
       headers: {
@@ -122,11 +128,14 @@ btnSendChanges.addEventListener('click', () => {
                   });
           } else {
               console.error('Error updating data');
+              errorAlert();
           }
           showData();
       })
       .catch(error => {
           console.error('Error updating data:', error);
+          errorAlert();
+          
       });
       
       inputPutId.value = '';
@@ -176,33 +185,40 @@ document.getElementById("btnGet1").addEventListener("click", function() {
   var url = "https://65427c7aad8044116ed372d0.mockapi.io/users";
   if (inputId) {
     url += "/" + inputId;
+  } else if (inputId === '') {
+    showData();
+    return;
   }
   console.log(url);
   fetch(url)
-    .then(response => response.json())
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('No se encontró el usuario');
+      }
+      return response.json();
+    })
     .then(data => {
       const userList = document.getElementById('results');
       userList.innerHTML = '';
-      if (inputId) {
-        console.log(data);  
-        let html = '';
-        html += `
+      console.log(data);
+      let html = '';
+      html += `
         <div> <hr> > ID: ${data.id} <br>
               > Name: ${data.name} <br>
               > Lastname: ${data.lastname}<hr><br>
         </div>`;
-        userList.innerHTML = html;
-      } else {
-        console.log(data.users);
-        showData();
-      }
+      userList.innerHTML = html;
     })
     .catch(error => {
       console.error("Algo salió mal...", error);
+      errorAlert();
+      setTimeout(() => {
+        showData();
+    }, 2000);
     });
-    inputGet1Id.value = '';
-});
+  inputGet1Id.value = '';
 
+});
 // Función que se llamará al final de realizar cáda método para actualizar los datos
 function showData(){
   fetch('https://65427c7aad8044116ed372d0.mockapi.io/users')
