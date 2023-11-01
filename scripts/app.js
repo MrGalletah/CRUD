@@ -8,6 +8,7 @@ fetch("https://6542837dad8044116ed3816f.mockapi.io/users")
   });
 
 const btnSearchId = document.getElementById("btnGet1");
+//METODO GET
 btnSearchId.addEventListener("click", () => {
   const inputSearchId = document.getElementById("inputGet1Id").value;
   const urlId = `https://6542837dad8044116ed3816f.mockapi.io/users/${inputSearchId}`;
@@ -27,7 +28,7 @@ btnSearchId.addEventListener("click", () => {
 });
 
 const btnPost = document.getElementById("btnPost");
-
+//METODO POST
 btnPost.addEventListener("click", function () {
   const nameInput = document.getElementById("inputPostNombre").value;
   const lastNameInput = document.getElementById("inputPostApellido").value;
@@ -47,7 +48,7 @@ btnPost.addEventListener("click", function () {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log('usuario agregado',data);
+        console.log("usuario agregado", data);
         document.getElementById("inputPostNombre").value = "";
         document.getElementById("inputPostApellido").value = "";
       })
@@ -59,21 +60,24 @@ btnPost.addEventListener("click", function () {
   }
 });
 
-const deleteBtn = document.getElementById('btnDelete');
-deleteBtn.addEventListener('click', function () {
-  const deleteInput = document.getElementById('inputDelete').value;
+//Metodo DELETE 
+const deleteBtn = document.getElementById("btnDelete");
+deleteBtn.addEventListener("click", function () {
+  const deleteInput = document.getElementById("inputDelete").value;
   fetch(`https://6542837dad8044116ed3816f.mockapi.io/users${deleteInput}`, {
-    method: 'DELETE',
+    method: "DELETE",
   })
-    .then(response => {
+    .then((response) => {
       if (response.status === 200) {
-        console.log('Usuario eliminado con éxito');
+        console.log("Usuario eliminado con éxito");
       } else {
-        console.error('Error al eliminar usuario. Estado de respuesta:', response.status);
+        console.error(
+          "Error al eliminar usuario. Estado de respuesta:",
+          response.status
+        );
       }
     })
-    .catch(error => {
-      console.error('Error al eliminar usuario:', error);
+    .catch((error) => {
+      console.error("Error al eliminar usuario:", error);
     });
 });
-
